@@ -1,0 +1,37 @@
+name: ShowID
+main: me.darkwiiplayer.showid.ShowID
+version: 0.1
+commands:
+   showid:
+      description: This is a demo command.
+      usage: /showid [player]
+      permission-message: You don't have <permission>
+permissions:
+   uuid.*:
+      description: Gives access to all /showid functionlities
+      children:
+         uuid.self: true
+         uuid.others: true
+         uuid.others.silent: true
+         uuid.tell: true
+   uuid.self:
+      description: Lets you view your own UUID
+      default: true
+   uuid.others:
+      description: Let's you view other players' UUID
+      default: op
+   uuid.others.silent:
+      description: Let's you view other players' UUID without telling them.
+      default: false
+   uuid.tell:
+      description: Tells you if a player or the console requests your UUID using this plugin
+      default: false
+      children:
+         uuid.tell.player: true
+         uuid.tell.console: true
+   uuid.tell.player:
+      description: Tells you if a player requests your UUID using this plugin
+      default: true
+   uuid.tell.console:
+      description: Tells you if the console requests your UUID using this plugin
+      default: false
