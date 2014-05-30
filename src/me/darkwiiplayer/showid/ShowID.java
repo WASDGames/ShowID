@@ -51,7 +51,7 @@ public class ShowID extends JavaPlugin {
 							player.sendMessage("The console requested your UUID.\nYour UUID is: " + player.getUniqueId());
 						}
 					} else {
-						sender.sendMessage("Player " + args[0] + " Not found! (type /list to get a list of all the players online)");
+						sender.sendMessage("Player \"" + args[0] + "\" Not found! (type /list to get a list of all the players online)");
 					}
 				} else {
 					sender.sendMessage("You are a console. You have no UUID.");
