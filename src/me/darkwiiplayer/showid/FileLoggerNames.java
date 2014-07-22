@@ -19,22 +19,19 @@ public class FileLoggerNames {
 	FileWriter FWriter;
 	
 	DumperOptions options = new DumperOptions();
-	Yaml yaml = new Yaml(options);
+	Yaml yaml;
 	
 	public FileLoggerNames() {
-		fileName = "/UUID/login.yml";
+		fileName = "UUID/login.yml";
 		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
 	}
 	
 	public boolean logName(UUID id, String name) {
 		Object  input; //This is what we read from the file
 		HashMap<String, Object> output;
 		file = new File(fileName); 
-		try {
-			file.createNewFile();
-		} catch (IOException e1) {			
-			// TODO Auto-generated catch block			
-		}
+		file.getParentFile().mkdirs();
 		
 		if (!file.exists()) { //Create the file if it doesn't exist, exit with FALSE if it doesn't work (file does not exist and cannot be created)
 			try {
@@ -48,6 +45,9 @@ public class FileLoggerNames {
 			IStream = new FileInputStream(file);
 			
 			input = yaml.load(IStream);
+			if (input == null) {
+				input = new HashMap<String, ArrayList>();
+			}
 			
 			IStream.close();
 			
