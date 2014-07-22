@@ -1,13 +1,33 @@
 package me.darkwiiplayer.showid;
 
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShowID extends JavaPlugin {
+	
+	public final Logger logger = Logger.getLogger("minecraft");
+	private static ShowID instance;
+	FileLoggerNames nameLogger = new FileLoggerNames();
+		
+	ShowID() {
+		instance = this;
+	}	
 
+	public static Plugin getInstance() {
+		return instance;
+	}
+	
+	
+	
+	
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
@@ -62,6 +82,9 @@ public class ShowID extends JavaPlugin {
 	return false;
 	}
 
-
+	@EventHandler
+	public void onLogin(PlayerLoginEvent event) {
+		nameLogger.logName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+	}
 
 }
