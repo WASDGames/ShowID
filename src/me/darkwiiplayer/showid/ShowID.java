@@ -26,6 +26,7 @@ public class ShowID extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
+		getServer().getPluginManager().registerEvents(this, this);
 		instance = this;
 		logger.info("ShowID has been enabled.");
 	}
@@ -92,8 +93,8 @@ public class ShowID extends JavaPlugin implements Listener {
 	}
 
 	@EventHandler
-	public void onplayerjoin(PlayerJoinEvent event) {
-		((ShowID)ShowID.getInstance()).logger.log(Level.INFO, "Hello World!");
+	public void onLogin(PlayerLoginEvent event) {
+		logger.info("Hello World!");
 		nameLogger.logName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 	}
 
