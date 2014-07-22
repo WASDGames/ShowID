@@ -5,10 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import org.yaml.snakeyaml.DumperOptions;
@@ -24,7 +22,7 @@ public class FileLoggerNames {
 	Yaml yaml = new Yaml(options);
 	
 	public FileLoggerNames() {
-		fileName = "\\UUID\\login.yml";
+		fileName = "/UUID/login.yml";
 		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 	}
 	
@@ -32,7 +30,11 @@ public class FileLoggerNames {
 		Object  input; //This is what we read from the file
 		HashMap<String, Object> output;
 		file = new File(fileName); 
-		file.mkdir();
+		try {
+			file.createNewFile();
+		} catch (IOException e1) {			
+			// TODO Auto-generated catch block			
+		}
 		
 		if (!file.exists()) { //Create the file if it doesn't exist, exit with FALSE if it doesn't work (file does not exist and cannot be created)
 			try {
@@ -87,6 +89,7 @@ public class FileLoggerNames {
 			FWriter = new FileWriter(file);
 			yaml.dump(output, FWriter);
 			FWriter.close();
+			((ShowID)ShowID.getInstance()).logger.log(Level.INFO, "Player " + name + " Joined with UUID " + id.toString() + ". Event has been logged to \"" + fileName + "\"");
 			return true;
 		} catch (IOException e) {
 			((ShowID)ShowID.getInstance()).logger.log(Level.SEVERE, "Input/Output exception while saving UUID/Name list - Java error: " + e.getMessage());

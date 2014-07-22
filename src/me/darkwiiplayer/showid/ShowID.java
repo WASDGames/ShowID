@@ -1,30 +1,39 @@
 package me.darkwiiplayer.showid;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ShowID extends JavaPlugin {
+public class ShowID extends JavaPlugin implements Listener {
 	
 	public final Logger logger = Logger.getLogger("minecraft");
 	private static ShowID instance;
 	FileLoggerNames nameLogger = new FileLoggerNames();
-		
-	ShowID() {
-		instance = this;
-	}	
 
 	public static Plugin getInstance() {
 		return instance;
 	}
 	
-	
+	@Override
+	public void onEnable() {
+		instance = this;
+		logger.info("ShowID has been enabled.");
+	}
+
+	@Override
+	public void onDisable() {
+		logger.info("ShowID has been disabled.");
+	}
 	
 	
 	
@@ -83,7 +92,8 @@ public class ShowID extends JavaPlugin {
 	}
 
 	@EventHandler
-	public void onLogin(PlayerLoginEvent event) {
+	public void onplayerjoin(PlayerJoinEvent event) {
+		((ShowID)ShowID.getInstance()).logger.log(Level.INFO, "Hello World!");
 		nameLogger.logName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 	}
 
