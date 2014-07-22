@@ -7,8 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -22,7 +26,7 @@ public class FileLoggerNames {
 	Yaml yaml;
 	
 	public FileLoggerNames() {
-		fileName = "UUID/login.yml";
+		fileName = "logs/uuid/names.yml";
 		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		yaml = new Yaml(options);
 	}
@@ -59,12 +63,14 @@ public class FileLoggerNames {
 			return false;
 		}
 		
-		if (input.getClass().equals(HashMap.class)) { //Input object is a hashmap (as expected)
+		if (input.getClass().equals(LinkedHashMap.class)) { //Input object is a hashmap (as expected)
 			output = (HashMap)input;
 			
 			if (output.containsKey(id.toString())) { //Already knows the UUID
 				if (output.get(id.toString()).getClass().equals(ArrayList.class)) { //Everything is fine
-					((ArrayList)output.get(id.toString())).add(name);
+					if (!((List)output.get(id.toString())).contains(name)) {
+						((List)output.get(id.toString())).add(name);
+					}
 				} else if (output.get(id.toString()).getClass().equals(String.class)) { //Value is string instead of list? Shouldn't happen, but CAN happen if the file is edited manually, so why nit catch it :)
 					String tmp = (String) output.get(id.toString());
 					output.put(id.toString(), new ArrayList());

@@ -94,7 +94,6 @@ public class ShowID extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
-		logger.info("Hello World!");
 		nameLogger.logName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
 	}
 
