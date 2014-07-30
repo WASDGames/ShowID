@@ -14,6 +14,7 @@ permissions:
          uuid.others: true
          uuid.others.silent: true
          uuid.tell: true
+         uuid.options: true
    uuid.self:
       description: Lets you view your own UUID
       default: true
@@ -34,4 +35,7 @@ permissions:
       default: true
    uuid.tell.console:
       description: Tells you if the console requests your UUID using this plugin
+      default: false
+   uuid.options:
+      description: Let's you change the logging options
       default: false
