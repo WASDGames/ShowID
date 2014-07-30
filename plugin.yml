@@ -5,7 +5,15 @@ commands:
    showid:
       description: This is a demo command.
       usage: /showid [player]
-      permission-message: You don't have <permission>
+      permission-message: "[SHOWID] You don't have the required permission!"
+   lognames:
+      description: toggles logging of names on or off.
+      usage: /lognames [on|off]
+      permission-message: "[SHOWID] You don't have the required permission!"
+   logjoins:
+      description: toggles logging of player join events on or off.
+      usage: /logjoins [on|off]
+      permission-message: "[SHOWID] You don't have the required permission!"
 permissions:
    uuid.*:
       description: Gives access to all /showid functionlities
