@@ -15,6 +15,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShowID extends JavaPlugin implements Listener {
+	//OPTIONS:
+	private Boolean logNames = true;
+	private Boolean logJoins = true;
 	
 	public final Logger logger = Logger.getLogger("minecraft");
 	private static ShowID instance;
@@ -52,23 +55,23 @@ public class ShowID extends JavaPlugin implements Listener {
 						//Gets the player from the name used
 
 						if (player != null) { // Valid Player
-							sender.sendMessage(args[0] + "'s UUID is: "
+							sender.sendMessage("[SHOWID] " + args[0] + "'s UUID is: "
 									+ player.getUniqueId());
 							if (player.hasPermission("uuid.tell.player") & !sender.hasPermission("uuid.others.silent")) {
-								player.sendMessage("The player " + sender.getName() + " requested your UUID.\nYour UUID is: " + player.getUniqueId());
+								player.sendMessage("[SHOWID] The player " + sender.getName() + " requested your UUID.\nYour UUID is: " + player.getUniqueId());
 							}
 						} else { // Not a valid player
-							sender.sendMessage("Player \"" + args[0] + "\" not found!");
+							sender.sendMessage("[SHOWID] Player \"" + args[0] + "\" not found!");
 						}
 					} else {
-						sender.sendMessage("You need the permission node uuid.others to do this!");
+						sender.sendMessage("[SHOWID] You need the permission node uuid.others to do this!");
 					}
 
 				} else { // Request own ID
 					if (sender.hasPermission("uuid.self")) {
-						sender.sendMessage("Your ID is: " + ((Player) sender).getUniqueId());
+						sender.sendMessage("[SHOWID] Your ID is: " + ((Player) sender).getUniqueId());
 					} else {
-						sender.sendMessage("You need the permission node uuid.self to do this!");
+						sender.sendMessage("[SHOWID] You need the permission node uuid.self to do this!");
 					}
 				}
 			return true;
@@ -78,17 +81,60 @@ public class ShowID extends JavaPlugin implements Listener {
 					if (player != null) {
 						sender.sendMessage(args[0] + "'s UUID is: "	+ player.getUniqueId());
 						if (player.hasPermission("uuid.tell.console")) {
-							player.sendMessage("The console requested your UUID.\nYour UUID is: " + player.getUniqueId());
+							player.sendMessage("[SHOWID] The console requested your UUID.\nYour UUID is: " + player.getUniqueId());
 						}
 					} else {
-						sender.sendMessage("Player \"" + args[0] + "\" Not found! (type /list to get a list of all the players online)");
+						sender.sendMessage("[SHOWID] Player \"" + args[0] + "\" Not found! (type /list to get a list of all the players online)");
 					}
 				} else {
-					sender.sendMessage("You are a console. You have no UUID.");
+					sender.sendMessage("[SHOWID] You are a console. You have no UUID.");
 				}
-			}
+			}			
 			return true;
 		}
+		
+		if (cmd.getName().equalsIgnoreCase("lognames")) {
+			if (sender instanceof Player) { //Check if called by player
+				Player player = (Player)sender;
+				if (player.hasPermission("uuid.options")) { //Has the required permission
+					if (args.length > 0) {
+						if (args[0].equalsIgnoreCase("on")) {logNames = true;} else
+						if (args[0].equalsIgnoreCase("off")) {logNames = false;}
+						else { logNames = !logNames; }//Invalid argument						
+					} else { logNames = !logNames; } //Called with no arguments
+				} else { //Doesn't have the required permission
+					player.sendMessage("[SHOWID] You don't have the permission to do that!");
+				}
+			} else { //Called by console
+				if (args.length > 0) { //The actual command interpreting
+					if (args[0].equalsIgnoreCase("on")) {logNames = true;} else
+					if (args[0].equalsIgnoreCase("off")) {logNames = false;}
+					else { logNames = !logNames; } //Invalid argument
+				} else { logNames = !logNames; } //Called with no arguments
+			}
+		}
+		
+		if (cmd.getName().equalsIgnoreCase("logjoins")) {
+			if (sender instanceof Player) { //Check if called by player
+				Player player = (Player)sender;
+				if (player.hasPermission("uuid.options")) { //Has the required permission
+					if (args.length > 0) {
+						if (args[0].equalsIgnoreCase("on")) {logJoins = true;} else
+						if (args[0].equalsIgnoreCase("off")) {logJoins = false;}
+						else { logJoins = !logJoins; }//Invalid argument						
+					} else { logJoins = !logJoins; } //Called with no arguments
+				} else { //Doesn't have the required permission
+					player.sendMessage("[SHOWID] You don't have the permission to do that!");
+				}
+			} else { //Called by console
+				if (args.length > 0) { //The actual command interpreting
+					if (args[0].equalsIgnoreCase("on")) {logJoins = true;} else
+					if (args[0].equalsIgnoreCase("off")) {logJoins = false;}
+					else { logJoins = !logJoins; } //Invalid argument
+				} else { logJoins = !logJoins; } //Called with no arguments
+			}
+		}
+		
 	return false;
 	}
 
