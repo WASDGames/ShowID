@@ -1,5 +1,7 @@
 package me.darkwiiplayer.showid;
 
+//Makes use of SnakeYaml 1.13
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +29,7 @@ public class ShowID extends JavaPlugin implements Listener {
 	public final Logger logger = Logger.getLogger("minecraft");
 	private static ShowID instance;
 	FileLoggerNames nameLogger = new FileLoggerNames();
+	FileLoggerJoin joinLogger = new FileLoggerJoin();
 
 	public static Plugin getInstance() {
 		return instance;
@@ -201,25 +204,26 @@ public class ShowID extends JavaPlugin implements Listener {
 			}
 			return true;
 		}
-		
-		//=== LOGNAMES ===
+
+		// === LOGNAMES ===
 
 		if (cmd.getName().equalsIgnoreCase("lognames")) {
 			if (sender instanceof Player) { // Check if called by player
 				Player player = (Player) sender;
-				if (player.hasPermission("uuid.options")) { // Has the required permission
+				if (player.hasPermission("uuid.options")) { // Has the required
+															// permission
 					if (args.length > 0) {
 						if (args[0].equalsIgnoreCase("on")) {
 							setNameLogging(true);
 							sender.sendMessage("[SHOWID] Name logging has been turned on");
 							return true;
-						} 
+						}
 						if (args[0].equalsIgnoreCase("off")) {
 							setNameLogging(false);
 							sender.sendMessage("[SHOWID] Name logging has been turned off");
 							return true;
 						}
-						
+
 						// Invalid argument
 						sender.sendMessage("[SHOWID] invalid command syntax");
 						sender.sendMessage("[SHOWID] loggnames [on|off]");
@@ -254,8 +258,8 @@ public class ShowID extends JavaPlugin implements Listener {
 			}
 		}
 
-		//=== LOGJOINS ===
-		
+		// === LOGJOINS ===
+
 		if (cmd.getName().equalsIgnoreCase("logjoins")) {
 			if (sender instanceof Player) { // Check if called by player
 				Player player = (Player) sender;
@@ -271,7 +275,7 @@ public class ShowID extends JavaPlugin implements Listener {
 							setJoinLogging(false);
 							sender.sendMessage("[SHOWID] Join logging has been turned off");
 							return true;
-						} 
+						}
 						// Invalid argument
 						sender.sendMessage("[SHOWID] invalid command syntax");
 						sender.sendMessage("[SHOWID] loggjoins [on|off]");
@@ -287,9 +291,10 @@ public class ShowID extends JavaPlugin implements Listener {
 					}
 				} else {
 					// Doesn't have the required permission
-					player.sendMessage("[SHOWID] You don't have the permission to do that!"); return true;
+					player.sendMessage("[SHOWID] You don't have the permission to do that!");
+					return true;
 				}
-				
+
 			} else { // Called by console
 				if (args.length > 0) { // The actual command interpreting
 					if (args[0].equalsIgnoreCase("on")) {
@@ -302,7 +307,7 @@ public class ShowID extends JavaPlugin implements Listener {
 					}
 					// Invalid argument
 					logger.info("[SHOWID] logjoins [on|off]");
-					
+
 				} else { // Called with no arguments
 					logJoins = !logJoins;
 					return true;
@@ -319,8 +324,12 @@ public class ShowID extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onLogin(PlayerLoginEvent event) {
 		if (logNames) {
-			nameLogger.logName(event.getPlayer().getUniqueId(), event
-					.getPlayer().getName());
+			if (logNames) {
+				nameLogger.logName(event.getPlayer().getUniqueId(), event.getPlayer().getName());
+			}
+			if (logJoins) {
+				joinLogger.logJoin(event.getPlayer());
+			}
 		}
 	}
 
